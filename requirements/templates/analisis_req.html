@@ -1,0 +1,160 @@
+{% extends "base_new.html" %}
+{% load static %}
+
+{% block content %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageContainer = document.getElementById('message-container');
+
+        // Obtener todos los checkboxes del campo MultipleChoice
+        const checkboxes = document.querySelectorAll('input[name="modelos"]');
+        const options_models = {
+                '1': 13,
+                '2': 15,
+                '3': 25,
+                '4': 3,
+                '5': 4
+        }
+            
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Gather the selected checkboxes
+                    const selectedCheckboxes = Array.from(checkboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value);
+
+                    // Display the message based on the selected checkboxes
+                    if (selectedCheckboxes.length > 0) {
+                        const totalSum = Object.keys(options_models)
+                            .filter(key => selectedCheckboxes.includes(key)) 
+                            .reduce((sum, key) => sum + options_models[key], 0);
+                        messageContainer.textContent = 'Approximate time (seconds) for one requirement:'+totalSum;
+                        //'Selected: ${selectedCheckboxes.join(', ')}';
+                        messageContainer.style.display = 'block';
+                    } else {
+                        messageContainer.style.display = 'none';
+                    }
+              
+            });
+        });
+    });
+</script>
+
+<table align="center" border="0">
+<colgroup>
+    <col style="width: 20%;">
+    <col style="width: 80%;"> 
+</colgroup>
+<thead>
+    <tr>
+    <th colspan="2">
+    <h3>Requirements Similarity</h3>
+    </th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+    <th colspan="2">
+     <p>A search will be performed for requirements similar to those entered, either from the current repository or from the files themselves.
+    </th>
+    </tr>
+
+<form action="" method="post" enctype="multipart/form-data">
+ {% csrf_token %}
+
+        <tr>
+            <td>
+             <div style="display: flex;">
+                 <div style="flex: 9; padding-right: 2px;">{{ form.req.label_tag}}</div>
+                 <div style="flex: 1;"><span style="display: inline-block;" data-toggle="tooltip" data-placement="bottom" title="{{form.req.help_text|safe}}">
+                 <span class="glyphicon glyphicon-info-sign"></span></div></div>
+             </div>  
+            </td>
+            <td>{{ form.req }} {{ form.docfile }}</td>
+        </tr>
+        <tr>
+            <td>
+             <div style="display: flex;">
+                 <div style="flex: 9; padding-right: 2px;">{{ form.docfileComp.label_tag }}</div>
+                 <div style="flex: 1;"><span data-toggle="tooltip" data-placement="bottom" title="{{form.docfileComp.help_text|safe}}">
+                 <span class="glyphicon glyphicon-info-sign"></span></span></div></div>
+             </div>  
+            </td>
+            <td>{{ form.docfileComp }} {{ form.docfileComp2 }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.langs.label_tag}}
+            </td>
+            <td>{{ form.langs }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.preprocess.label_tag}}
+            </td>
+            <td>{{ form.preprocess }}</td>
+        </tr>
+        <tr>
+            <td>
+            <div style="display: flex;">
+                <div style="flex: 85; padding-right: 2px;">{{ form.threshold.label_tag}}</div>
+                <div style="flex: 15;"><div style="display: inline-block;" data-toggle="tooltip" data-placement="bottom" title="{{form.threshold.help_text|safe}}">
+                <span class="glyphicon glyphicon-info-sign"></span></div></div>
+            </div>            
+            </td>
+            <td>{{ form.threshold }}</td>
+        </tr>
+        <tr>
+            <td>
+            <div style="display: flex;">
+                <div style="flex: 65; padding-right: 2px;">
+                    {{ form.modelos.label_tag}}
+                </div>
+                <div style="flex: 35;"> <span style="display: inline-block;" data-toggle="tooltip" data-placement="bottom" title="{{form.modelos.help_text|safe}}">
+                 <span class="glyphicon glyphicon-info-sign"></span></span></div>
+            </div>  
+            </td>
+            <td><div id="message-container" style="display: none; margin-top: 10px; margin-bottom: 10px; color: green;" ></div>
+            {{ form.modelos }}</td>
+        </tr>
+
+<tr>
+<th colspan="2">
+ <button type="submit" name="btn">Execute</button>
+</th>
+</tr>
+</form>
+
+<tr>
+<td colspan="2">
+ <h5><span class="glyphicon glyphicon-list"></span> Results</h5>
+         
+         {% if listado %}
+           {{ listado|safe }}
+            
+         {% else %}
+             {% if messages %}
+                 {% for message in messages %}
+                      <li class="{{ message.tags }}">{{ message }}</li>
+                 {% endfor %}
+             {% else %}
+                    Pending processing
+             {% endif %} 
+         {% endif %}   
+</td>
+</tr>
+
+{% if listado %}
+<tr>
+<td colspan="2">
+<form action="" method="post">
+      {% csrf_token %}
+ <button type="submit" name="btn_descarga">Download Results (CSV)</button>
+ </form> 
+ 
+</td>
+</tr>
+ {% endif %}  
+</table>
+
+              
+{% endblock %}
