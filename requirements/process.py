@@ -32,18 +32,13 @@ FILES_DIR = os.path.abspath(os.path.join(BASE_DIR, '../fileserver'))
 nlp_spacy = spacy.load('es_core_news_sm') 
 nlp_spacy_en = spacy.load("en_core_web_sm")
 
-ft = fasttext.load_model('C:/fileserver/cc.es.300.bin') #CAMBIAR PARA PROD
-#ft = fasttext.load_model(settings.FILES_DIR+'/cc.es.300.bin') 
-
-ft_en = fasttext.load_model('C:/fileserver/cc.en.300.bin')
-#ft_en = fasttext.load_model(settings.FILES_DIR+'/cc.en.300.bin')
+ft = fasttext.load_model(FILES_DIR+'/cc.es.300.bin') 
+ft_en = fasttext.load_model(FILES_DIR+'/cc.en.300.bin')
                      
-#spanish_model_word2vec = os.path.join(settings.FILES_DIR, 'SBW-vectors-300-min5.bin.gz')
 spanish_model_word2vec = os.path.join(FILES_DIR, 'SBW-vectors-300-min5.bin.gz')
 model_word2vec = KeyedVectors.load_word2vec_format(spanish_model_word2vec, binary=True)
 w2v_vocab = set(model_word2vec.index_to_key )
 
-#dir_word2vec_en = os.path.join(settings.FILES_DIR, 'GoogleNews-vectors-negative300.bin.gz')
 dir_word2vec_en = os.path.join(FILES_DIR, 'GoogleNews-vectors-negative300.bin.gz')
 model_word2vec_en = KeyedVectors.load_word2vec_format(dir_word2vec_en, binary=True)
 w2v_vocab_en = set(model_word2vec_en.index_to_key)
