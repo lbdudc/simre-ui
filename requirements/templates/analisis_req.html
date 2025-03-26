@@ -132,13 +132,7 @@
            {{ listado|safe }}
             
          {% else %}
-             {% if messages %}
-                 {% for message in messages %}
-                      <li class="{{ message.tags }}">{{ message }}</li>
-                 {% endfor %}
-             {% else %}
-                    Pending processing
-             {% endif %} 
+             Pending processing
          {% endif %}   
 </td>
 </tr>

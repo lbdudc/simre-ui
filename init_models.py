@@ -17,10 +17,10 @@ def main():
     subprocess.run([sys.executable, '-m', 'spacy', 'download', 'en_core_web_sm'])    
     fasttext.util.download_model('en', if_exists='ignore') 
     fasttext.util.download_model('es', if_exists='ignore')
-    os.rename(BASE_DIR_+'RE_SPL_Similarity/'+'cc.en.300.bin', FILES_DIR+'/'+'cc.en.300.bin')
-    os.rename(BASE_DIR_+'RE_SPL_Similarity/'+'cc.es.300.bin', FILES_DIR+'/'+'cc.es.300.bin')
-    os.remove(BASE_DIR_+'RE_SPL_Similarity/'+'cc.en.300.bin.gz')
-    os.remove(BASE_DIR_+'RE_SPL_Similarity/'+'cc.es.300.bin.gz')
+    os.rename(BASE_DIR_+'simre-ui/'+'cc.en.300.bin', FILES_DIR+'/'+'cc.en.300.bin')
+    os.rename(BASE_DIR_+'simre-ui/'+'cc.es.300.bin', FILES_DIR+'/'+'cc.es.300.bin')
+    os.remove(BASE_DIR_+'simre-ui/'+'cc.en.300.bin.gz')
+    os.remove(BASE_DIR_+'simre-ui/'+'cc.es.300.bin.gz')
     
     #https://crscardellino.github.io/SBWCE/    
     url = "https://cs.famaf.unc.edu.ar/~ccardellino/SBWCE/SBW-vectors-300-min5.bin.gz"
